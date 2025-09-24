@@ -1,72 +1,43 @@
-export interface Doctor {
+export interface Patient {
   id: string;
   userId: string;
+  medicalRecordNumber: string;
   firstName: string;
   lastName: string;
   email: string;
   phone?: string;
-  specialization: string;
-  licenseNumber: string;
-  isAcceptingAppointments: boolean;
-  bio?: string;
-  education: string[];
-  experience: number; // years
-  languages: string[];
-  consultationFee?: number;
+  dateOfBirth: string;
+  gender: 'male' | 'female' | 'other';
   address: {
     street: string;
     city: string;
     state: string;
     zipCode: string;
     country: string;
+  };
+  emergencyContact: {
+    name: string;
+    phone: string;
+    relationship: string;
+  };
+  allergies: string[];
+  medicalHistory: string[];
+  insuranceInfo?: {
+    provider: string;
+    policyNumber: string;
+    groupNumber?: string;
   };
   createdAt: string;
   updatedAt: string;
 }
 
-export interface WeeklySchedule {
-  monday: DaySchedule;
-  tuesday: DaySchedule;
-  wednesday: DaySchedule;
-  thursday: DaySchedule;
-  friday: DaySchedule;
-  saturday: DaySchedule;
-  sunday: DaySchedule;
-}
-
-export interface DaySchedule {
-  isAvailable: boolean;
-  slots: TimeSlot[];
-}
-
-export interface TimeSlot {
-  startTime: string; // "09:00"
-  endTime: string; // "17:00"
-  duration: number; // minutes per appointment
-}
-
-export interface AvailabilityOverride {
-  id: string;
-  doctorId: string;
-  date: string;
-  isAvailable: boolean;
-  slots?: TimeSlot[];
-  reason?: string;
-  createdAt: string;
-}
-
-export interface CreateDoctorProfileRequest {
+export interface CreatePatientProfileRequest {
   firstName: string;
   lastName: string;
   email: string;
   phone?: string;
-  specialization: string;
-  licenseNumber: string;
-  bio?: string;
-  education: string[];
-  experience: number;
-  languages: string[];
-  consultationFee?: number;
+  dateOfBirth: string;
+  gender: 'male' | 'female' | 'other';
   address: {
     street: string;
     city: string;
@@ -74,19 +45,27 @@ export interface CreateDoctorProfileRequest {
     zipCode: string;
     country: string;
   };
+  emergencyContact: {
+    name: string;
+    phone: string;
+    relationship: string;
+  };
+  allergies?: string[];
+  medicalHistory?: string[];
+  insuranceInfo?: {
+    provider: string;
+    policyNumber: string;
+    groupNumber?: string;
+  };
 }
 
-export interface UpdateDoctorProfileRequest {
+export interface UpdatePatientProfileRequest {
   firstName?: string;
   lastName?: string;
   email?: string;
   phone?: string;
-  specialization?: string;
-  bio?: string;
-  education?: string[];
-  experience?: number;
-  languages?: string[];
-  consultationFee?: number;
+  dateOfBirth?: string;
+  gender?: 'male' | 'female' | 'other';
   address?: {
     street: string;
     city: string;
@@ -94,18 +73,23 @@ export interface UpdateDoctorProfileRequest {
     zipCode: string;
     country: string;
   };
+  insuranceInfo?: {
+    provider: string;
+    policyNumber: string;
+    groupNumber?: string;
+  };
 }
 
-export interface DoctorStats {
+export interface PatientStats {
   total: number;
-  accepting: number;
-  specializations: { [key: string]: number };
+  active: number;
+  newThisMonth: number;
 }
 
-export interface DoctorListQuery {
+export interface PatientListQuery {
   page?: number;
   limit?: number;
-  specialization?: string;
-  acceptingAppointments?: boolean;
   search?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }

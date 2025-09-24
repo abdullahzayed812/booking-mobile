@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from '@reduxjs/toolkit';
 
-import authReducer from '../features/auth/authSlice';
+import authReducer from '../features/auth/slices/authSlice';
 import { authApi } from '../features/auth/api/authApi';
 import { appointmentApi } from '../features/appointments/api/appointmentApi';
 import { patientApi } from '../features/patients/api/patientApi';

@@ -45,11 +45,19 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
       const result = await login(data).unwrap();
 
       // Store tokens securely
-      await EncryptedStorage.setItem('access_token', result.tokens.access);
-      await EncryptedStorage.setItem('refresh_token', result.tokens.refresh);
+      await EncryptedStorage.setItem('access_token', result.data.accessToken);
+      await EncryptedStorage.setItem('refresh_token', result.data.refreshToken);
 
       // Update Redux state
-      dispatch(setCredentials(result));
+      dispatch(
+        setCredentials({
+          user: result.data.user,
+          tokens: {
+            access: result.data.accessToken,
+            refresh: result.data.refreshToken,
+          },
+        }),
+      );
     } catch (err: any) {
       Alert.alert(
         'Login Failed',

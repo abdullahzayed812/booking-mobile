@@ -8,13 +8,14 @@ import {
   AuthResponse,
   Session,
 } from '../../../types/auth';
+import { ApiResponse } from '../../../types/api';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: baseQueryWithReauth,
   tagTypes: ['User', 'Session'],
   endpoints: builder => ({
-    register: builder.mutation<AuthResponse, RegisterRequest>({
+    register: builder.mutation<ApiResponse<AuthResponse>, RegisterRequest>({
       query: credentials => ({
         url: `${ENDPOINTS.AUTH}/register`,
         method: 'POST',
@@ -22,7 +23,7 @@ export const authApi = createApi({
       }),
     }),
 
-    login: builder.mutation<AuthResponse, LoginRequest>({
+    login: builder.mutation<ApiResponse<AuthResponse>, LoginRequest>({
       query: credentials => ({
         url: `${ENDPOINTS.AUTH}/login`,
         method: 'POST',
@@ -39,7 +40,7 @@ export const authApi = createApi({
     }),
 
     refreshToken: builder.mutation<
-      { tokens: { access: string; refresh: string } },
+      ApiResponse<{ tokens: { access: string; refresh: string } }>,
       { refreshToken: string }
     >({
       query: ({ refreshToken }) => ({
@@ -49,7 +50,7 @@ export const authApi = createApi({
       }),
     }),
 
-    me: builder.query<User, void>({
+    me: builder.query<ApiResponse<User>, void>({
       query: () => `${ENDPOINTS.AUTH}/me`,
       providesTags: ['User'],
     }),
@@ -65,7 +66,7 @@ export const authApi = createApi({
       }),
     }),
 
-    getSessions: builder.query<Session[], void>({
+    getSessions: builder.query<ApiResponse<Session[]>, void>({
       query: () => `${ENDPOINTS.AUTH}/sessions`,
       providesTags: ['Session'],
     }),
@@ -78,11 +79,11 @@ export const authApi = createApi({
       invalidatesTags: ['Session'],
     }),
 
-    validateToken: builder.query<{ valid: boolean }, void>({
+    validateToken: builder.query<ApiResponse<{ valid: boolean }>, void>({
       query: () => `${ENDPOINTS.AUTH}/validate`,
     }),
 
-    healthCheck: builder.query<{ status: string }, void>({
+    healthCheck: builder.query<ApiResponse<{ status: string }>, void>({
       query: () => `${ENDPOINTS.AUTH}/health`,
     }),
   }),

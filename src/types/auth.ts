@@ -24,10 +24,8 @@ export interface RegisterRequest {
 
 export interface AuthResponse {
   user: User;
-  tokens: {
-    access: string;
-    refresh: string;
-  };
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface Session {
