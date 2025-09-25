@@ -1,0 +1,10 @@
+export { PatientsScreen } from './screens/PatientsScreen';
+export { PatientDetailsScreen } from './screens/PatientDetailsScreen';
+export { PatientsList } from './components/PatientsList';
+export { PatientCard } from './components/PatientCard';
+export { PatientOverview } from './components/PatientOverview';
+export { PatientStatsHeader } from './components/PatientStatsHeader';
+export { PatientFilters } from './components/PatientFilters';
+export { PatientAppointments } from './components/PatientAppointments';
+export { PatientMedicalInfo } from './components/PatientMedicalInfo';
+export { styles as patientStyles } from './styles/patientStyles';

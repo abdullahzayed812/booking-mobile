@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   Alert,
-  StyleSheet,
   ActivityIndicator,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useDispatch } from 'react-redux';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { useLoginMutation } from '../api/authApi';
 import { setCredentials } from '../slices/authSlice';
+import { styles } from '../styles/authStyles';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -31,6 +35,7 @@ interface Props {
 export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     control,
@@ -38,24 +43,26 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   const onSubmit = async (data: LoginFormData) => {
     try {
       const result = await login(data).unwrap();
+      const {
+        data: { user, accessToken, refreshToken },
+      } = result;
 
-      // Store tokens securely
-      await EncryptedStorage.setItem('access_token', result.data.accessToken);
-      await EncryptedStorage.setItem('refresh_token', result.data.refreshToken);
+      await EncryptedStorage.setItem('access_token', accessToken);
+      await EncryptedStorage.setItem('refresh_token', refreshToken);
 
-      // Update Redux state
       dispatch(
         setCredentials({
-          user: result.data.user,
-          tokens: {
-            access: result.data.accessToken,
-            refresh: result.data.refreshToken,
-          },
+          user,
+          tokens: { access: accessToken, refresh: refreshToken },
         }),
       );
     } catch (err: any) {
@@ -67,112 +74,133 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Medical App</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <View style={styles.logoContainer}>
+          <Icon name="medical-bag" size={80} color="#2563eb" />
+          <Text style={styles.appTitle}>MedConnect</Text>
+          <Text style={styles.appSubtitle}>Your Healthcare Partner</Text>
+        </View>
 
-      <Controller
-        control={control}
-        name="email"
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={[styles.input, errors.email && styles.inputError]}
-            placeholder="Email"
-            value={value}
-            onChangeText={onChange}
-            keyboardType="email-address"
-            autoCapitalize="none"
+        <View style={styles.formContainer}>
+          <Text style={styles.formTitle}>Welcome Back</Text>
+          <Text style={styles.formSubtitle}>Sign in to your account</Text>
+
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, value } }) => (
+              <View style={styles.inputContainer}>
+                <Icon
+                  name="email-outline"
+                  size={20}
+                  color="#6b7280"
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={[styles.input, errors.email && styles.inputError]}
+                  placeholder="Email Address"
+                  value={value}
+                  onChangeText={onChange}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  placeholderTextColor="#9ca3af"
+                />
+              </View>
+            )}
           />
-        )}
-      />
-      {errors.email && (
-        <Text style={styles.errorText}>{errors.email.message}</Text>
-      )}
+          {errors.email && (
+            <Text style={styles.errorText}>{errors.email.message}</Text>
+          )}
 
-      <Controller
-        control={control}
-        name="password"
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={[styles.input, errors.password && styles.inputError]}
-            placeholder="Password"
-            value={value}
-            onChangeText={onChange}
-            secureTextEntry
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, value } }) => (
+              <View style={styles.inputContainer}>
+                <Icon
+                  name="lock-outline"
+                  size={20}
+                  color="#6b7280"
+                  style={styles.inputIcon}
+                />
+                <TextInput
+                  style={[styles.input, errors.password && styles.inputError]}
+                  placeholder="Password"
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry={!showPassword}
+                  autoComplete="password"
+                  placeholderTextColor="#9ca3af"
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                  style={styles.eyeIcon}
+                >
+                  <Icon
+                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                    size={20}
+                    color="#6b7280"
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
           />
-        )}
-      />
-      {errors.password && (
-        <Text style={styles.errorText}>{errors.password.message}</Text>
-      )}
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password.message}</Text>
+          )}
 
-      <TouchableOpacity
-        style={[styles.button, isLoading && styles.buttonDisabled]}
-        onPress={handleSubmit(onSubmit)}
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <ActivityIndicator color="white" />
-        ) : (
-          <Text style={styles.buttonText}>Login</Text>
-        )}
-      </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.primaryButton, isLoading && styles.buttonDisabled]}
+            onPress={handleSubmit(onSubmit)}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <>
+                <Icon
+                  name="login"
+                  size={20}
+                  color="white"
+                  style={styles.buttonIcon}
+                />
+                <Text style={styles.primaryButtonText}>Sign In</Text>
+              </>
+            )}
+          </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.linkText}>Don't have an account? Register</Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity
+            style={styles.forgotPassword}
+            onPress={() => navigation.navigate('ForgotPassword')}
+          >
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </TouchableOpacity>
+
+          <View style={styles.divider}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>or</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() => navigation.navigate('Register')}
+          >
+            <Icon
+              name="account-plus-outline"
+              size={20}
+              color="#2563eb"
+              style={styles.buttonIcon}
+            />
+            <Text style={styles.secondaryButtonText}>Create New Account</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 40,
-    color: '#2563eb',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 12,
-    fontSize: 16,
-  },
-  inputError: {
-    borderColor: '#dc2626',
-  },
-  errorText: {
-    color: '#dc2626',
-    fontSize: 14,
-    marginBottom: 12,
-  },
-  button: {
-    backgroundColor: '#2563eb',
-    borderRadius: 8,
-    padding: 16,
-    marginTop: 12,
-    alignItems: 'center',
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  linkText: {
-    color: '#2563eb',
-    textAlign: 'center',
-    marginTop: 20,
-    fontSize: 16,
-  },
-});
