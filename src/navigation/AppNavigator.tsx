@@ -3,14 +3,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector, useDispatch } from 'react-redux';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { StatusBar } from 'react-native';
 
 import { RootState } from '../app/store';
 import { setLoading } from '../features/auth/slices/authSlice';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
-import { LoadingScreen } from '../components/LoadingScreen';
+import { AuthLoadingScreen } from '../features/auth/components/AuthLoadingScreen';
+import { RealTimeProvider } from '../components/realtime/RealTimeProvider';
+import { notificationService } from '../services/notificationService';
 
-const Stack = createStackNavigator();
+const RootStack = createStackNavigator();
 
 export const AppNavigator: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,7 +30,7 @@ export const AppNavigator: React.FC = () => {
         const refreshToken = await EncryptedStorage.getItem('refresh_token');
 
         if (accessToken && refreshToken) {
-          // Validate token and get user info
+          // TODO: Validate token and get user info
           // You might want to call the /auth/me endpoint here
         }
       } catch (error) {
@@ -40,19 +43,29 @@ export const AppNavigator: React.FC = () => {
     initializeAuth();
   }, [dispatch]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Initialize notifications when user is authenticated
+      notificationService.initialize();
+    }
+  }, [isAuthenticated]);
+
   if (isLoading) {
-    return <LoadingScreen />;
+    return <AuthLoadingScreen />;
   }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isAuthenticated ? (
-          <Stack.Screen name="Main" component={MainNavigator} />
-        ) : (
-          <Stack.Screen name="Auth" component={AuthNavigator} />
-        )}
-      </Stack.Navigator>
+      <StatusBar barStyle="light-content" backgroundColor="#2563eb" />
+      <RealTimeProvider>
+        <RootStack.Navigator screenOptions={{ headerShown: false }}>
+          {isAuthenticated ? (
+            <RootStack.Screen name="Main" component={MainNavigator} />
+          ) : (
+            <RootStack.Screen name="Auth" component={AuthNavigator} />
+          )}
+        </RootStack.Navigator>
+      </RealTimeProvider>
     </NavigationContainer>
   );
 };
