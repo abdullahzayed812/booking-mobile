@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { styles } from '../../screens/styles';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Props {
   visible: boolean;
@@ -11,7 +12,7 @@ interface Props {
 
 export const DatePickerModal: React.FC<Props> = ({
   visible,
-  selectedDate,
+  // selectedDate,
   onDateChange,
   onClose,
 }) => {
@@ -26,7 +27,7 @@ export const DatePickerModal: React.FC<Props> = ({
           <View style={styles.datePickerHeader}>
             <Text style={styles.datePickerTitle}>Select Date</Text>
             <TouchableOpacity onPress={onClose}>
-              <Icon name="close" size={24} color="#6b7280" />
+              <Ionicons name="close" size={24} color="#6b7280" />
             </TouchableOpacity>
           </View>
 

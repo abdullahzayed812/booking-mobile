@@ -5,7 +5,7 @@ import { BookAppointmentScreen } from '../features/appointments/screens/BookAppo
 import { RescheduleAppointmentScreen } from '../features/appointments/screens/RescheduleAppointmentScreen';
 
 export type AppointmentsStackParamList = {
-  AppointmentsList: undefined;
+  AppointmentsList: { filter: string };
   AppointmentDetails: { appointmentId: string; doctorId?: string };
   BookAppointment: { doctorId?: string; patientId?: string };
   RescheduleAppointment: { appointmentId: string };

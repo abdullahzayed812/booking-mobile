@@ -12,12 +12,13 @@ import {
 import { RealTimeAvailabilityCalendar } from '../components/RealTimeAvailabilityCalendar';
 import { WeeklyScheduleEditor } from '../components/WeeklyScheduleEditor';
 import { DatePickerModal } from '../components/DatePickerModal';
+
 import { styles } from '../styles/doctorStyles';
-
 import { StackScreenProps } from '@react-navigation/stack';
-import { DoctorsStackParamList } from '../../../src/navigation/DoctorsNavigator';
+import { DoctorsStackParamList } from '../../../navigation/DoctorsNavigator';
 
-interface Props extends StackScreenProps<DoctorsStackParamList, 'DoctorAvailability'> {}
+interface Props
+  extends StackScreenProps<DoctorsStackParamList, 'DoctorAvailability'> {}
 
 export const DoctorAvailabilityScreen: React.FC<Props> = ({
   navigation,

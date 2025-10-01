@@ -131,7 +131,7 @@ export const PatientsScreen: React.FC<Props> = ({ navigation }) => {
 
       {/* Create Patient Modal */}
       <CreatePatientModal
-        visible={showCreateModal}
+        isVisible={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onSuccess={() => {
           setShowCreateModal(false);

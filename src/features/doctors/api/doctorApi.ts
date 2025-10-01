@@ -33,7 +33,7 @@ export const doctorApi = createApi({
       providesTags: ['Doctor'],
     }),
 
-    createDoctorProfile: builder.mutation<Doctor, CreateDoctorProfileRequest>({
+    createDoctor: builder.mutation<Doctor, CreateDoctorProfileRequest>({
       query: body => ({
         url: `${ENDPOINTS.DOCTORS}/profile`,
         method: 'POST',
@@ -160,7 +160,7 @@ export const doctorApi = createApi({
 
 export const {
   useListDoctorsQuery,
-  useCreateDoctorProfileMutation,
+  useCreateDoctorMutation,
   useGetDoctorProfileQuery,
   useUpdateDoctorProfileMutation,
   useToggleAcceptingAppointmentsMutation,

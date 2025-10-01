@@ -840,4 +840,70 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     textTransform: 'uppercase',
   },
+
+  // Form Styles
+  formContainer: {
+    padding: 20,
+  },
+  formHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  cancelButton: {
+    padding: 8,
+  },
+  formTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1f2937',
+    textAlign: 'center',
+    flex: 1,
+  },
+  placeholder: {
+    width: 24,
+  },
+  section: {
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#374151',
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 16,
+    color: '#1f2937',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  inputError: {
+    borderColor: '#ef4444',
+  },
+  submitSection: {
+    marginTop: 24,
+  },
+  submitButton: {
+    backgroundColor: '#2563eb',
+    borderRadius: 12,
+    paddingVertical: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  submitButtonDisabled: {
+    opacity: 0.6,
+  },
+  submitButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
 });

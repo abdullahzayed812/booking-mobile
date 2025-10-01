@@ -25,7 +25,7 @@ export const patientApi = createApi({
       providesTags: ['Patient'],
     }),
 
-    createProfile: builder.mutation<Patient, CreatePatientProfileRequest>({
+    createPatient: builder.mutation<Patient, CreatePatientProfileRequest>({
       query: body => ({
         url: `${ENDPOINTS.PATIENTS}/profile`,
         method: 'POST',
@@ -116,7 +116,7 @@ export const patientApi = createApi({
 
 export const {
   useListPatientsQuery,
-  useCreateProfileMutation,
+  useCreatePatientMutation,
   useGetProfileQuery,
   useUpdateProfileMutation,
   useUpdateEmergencyContactMutation,

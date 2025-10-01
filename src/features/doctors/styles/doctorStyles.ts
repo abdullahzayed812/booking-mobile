@@ -671,7 +671,78 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 20,
   },
-  retryButtonText: {
+
+  // ...Platform.select({
+  //   ios: {
+  //     shadowColor: '#000',
+  //     shadowOffset: { width: 0, height: 2 },
+  //     shadowOpacity: 0.1,
+  //     shadowRadius: 4,
+  //   },
+  //   android: {
+  //     elevation: 3,
+  //   },
+  // }),
+
+  // Modal Styles
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 20,
+    width: '90%',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1f2937',
+  },
+  closeButton: {
+    padding: 8,
+  },
+
+  // Weekly Schedule Editor
+  scheduleEditorContainer: {
+    padding: 20,
+  },
+  dayEditorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  dayLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#374151',
+  },
+  timeInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  saveButton: {
+    backgroundColor: '#2563eb',
+    borderRadius: 12,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  saveButtonDisabled: {
+    opacity: 0.6,
+  },
+  saveButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: '600',

@@ -4,15 +4,17 @@ import { useState } from 'react';
 import { useAppointmentStatsQuery } from '../api/appointmentApi';
 import { styles } from '../styles/appointmentStyles';
 import { StatusBar, Text, TouchableOpacity, View } from 'react-native';
-import { Icon } from 'react-native-vector-icons/Icon';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AppointmentStatsHeader } from '../components/AppointmentStatsHeader';
 import { AppointmentFilters } from '../components/AppointmentFilters';
 import { AppointmentsList } from '../components/AppointmentsList';
+import { CreateAppointmentModal } from '../components/CreateAppointmentModal';
 
 import { StackScreenProps } from '@react-navigation/stack';
-import { AppointmentsStackParamList } from '../../../src/navigation/AppointmentsNavigator';
+import { AppointmentsStackParamList } from '../../../navigation/AppointmentsNavigator';
 
-interface Props extends StackScreenProps<AppointmentsStackParamList, 'AppointmentsList'> {}
+interface Props
+  extends StackScreenProps<AppointmentsStackParamList, 'AppointmentsList'> {}
 
 export const AppointmentsScreen: React.FC<Props> = ({ navigation, route }) => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -43,7 +45,7 @@ export const AppointmentsScreen: React.FC<Props> = ({ navigation, route }) => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-left" size={24} color="white" />
+          <Ionicons name="arrow-left" size={24} color="white" />
         </TouchableOpacity>
 
         <View style={styles.headerCenter}>
@@ -60,7 +62,7 @@ export const AppointmentsScreen: React.FC<Props> = ({ navigation, route }) => {
             style={styles.createButton}
             onPress={() => setShowCreateModal(true)}
           >
-            <Icon name="plus" size={24} color="white" />
+            <Ionicons name="plus" size={24} color="white" />
           </TouchableOpacity>
         )}
       </View>
@@ -93,7 +95,7 @@ export const AppointmentsScreen: React.FC<Props> = ({ navigation, route }) => {
 
       {/* Create Appointment Modal */}
       <CreateAppointmentModal
-        visible={showCreateModal}
+        isVisible={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onSuccess={() => {
           setShowCreateModal(false);

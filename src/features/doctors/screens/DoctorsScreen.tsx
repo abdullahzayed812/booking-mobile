@@ -20,10 +20,20 @@ import { CreateDoctorModal } from '../components/CreateDoctorModal';
 import { styles } from '../styles/doctorStyles';
 import { RootState } from '../../../app/store';
 
-import { StackScreenProps } from '@react-navigation/stack';
-import { DoctorsStackParamList } from '../../../src/navigation/DoctorsNavigator';
+import { CompositeScreenProps } from '@react-navigation/native';
 
-interface Props extends StackScreenProps<DoctorsStackParamList, 'DoctorsList'> {}
+import { StackScreenProps } from '@react-navigation/stack';
+
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+
+import { MainTabParamList } from '../../../navigation/MainNavigator';
+
+import { DoctorsStackParamList } from '../../../navigation/DoctorsNavigator';
+
+type Props = CompositeScreenProps<
+  StackScreenProps<DoctorsStackParamList, 'DoctorsList'>,
+  BottomTabScreenProps<MainTabParamList>
+>;
 
 export const DoctorsScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -44,7 +54,7 @@ export const DoctorsScreen: React.FC<Props> = ({ navigation }) => {
 
   // If user is a doctor, show their own profile
   if (user?.role === 'doctor') {
-    navigation.replace('DoctorProfile', { doctorId: user.id });
+    navigation.replace('DoctorDetails', { doctorId: user.id });
     return null;
   }
 
@@ -84,6 +94,7 @@ export const DoctorsScreen: React.FC<Props> = ({ navigation }) => {
       {stats && (
         <DoctorStatsHeader
           stats={stats}
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           onStatPress={filter => {
             // Handle stat filter if needed
           }}
@@ -198,14 +209,17 @@ export const DoctorsScreen: React.FC<Props> = ({ navigation }) => {
         acceptingOnly={acceptingOnly}
         onDoctorPress={handleDoctorPress}
         onBookAppointment={doctorId =>
-          navigation.navigate('BookAppointment', { doctorId })
+          navigation.navigate('Appointments', {
+            screen: 'BookAppointment',
+            params: { doctorId },
+          })
         }
       />
 
       {/* Create Doctor Modal */}
       {canCreateDoctor && (
         <CreateDoctorModal
-          visible={showCreateModal}
+          isVisible={showCreateModal}
           onClose={() => setShowCreateModal(false)}
           onSuccess={() => {
             setShowCreateModal(false);

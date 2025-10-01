@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Icon } from 'react-native-vector-icons/Icon';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { styles } from '../styles/authStyles';
 
 export const ForgotPasswordScreen: React.FC<{ navigation: any }> = ({
@@ -39,7 +40,7 @@ export const ForgotPasswordScreen: React.FC<{ navigation: any }> = ({
     return (
       <View style={styles.container}>
         <View style={styles.centerContent}>
-          <Icon name="email-check" size={80} color="#10b981" />
+          <Ionicons name="email-check" size={80} color="#10b981" />
           <Text style={styles.successTitle}>Check Your Email</Text>
           <Text style={styles.successMessage}>
             We've sent a password reset link to {email}
@@ -62,12 +63,12 @@ export const ForgotPasswordScreen: React.FC<{ navigation: any }> = ({
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-left" size={24} color="#2563eb" />
+          <Ionicons name="arrow-left" size={24} color="#2563eb" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.centerContent}>
-        <Icon name="lock-reset" size={80} color="#2563eb" />
+        <Ionicons name="lock-reset" size={80} color="#2563eb" />
         <Text style={styles.formTitle}>Forgot Password?</Text>
         <Text style={styles.formDescription}>
           Enter your email address and we'll send you a link to reset your
@@ -75,7 +76,7 @@ export const ForgotPasswordScreen: React.FC<{ navigation: any }> = ({
         </Text>
 
         <View style={styles.inputContainer}>
-          <Icon
+          <Ionicons
             name="email-outline"
             size={20}
             color="#6b7280"

@@ -2,7 +2,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { AppointmentsStackParamList } from '../../../navigation/AppointmentsNavigator';
 import { CreateAppointmentForm } from '../../../components/forms/CreateAppointmentForm';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import { Icon } from 'react-native-vector-icons/Icon';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styles } from '../styles/appointmentStyles';
 
 interface Props
@@ -21,7 +21,7 @@ export const BookAppointmentScreen: React.FC<Props> = ({
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-left" size={24} color="white" />
+          <Ionicons name="arrow-left" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Book Appointment</Text>
       </View>
