@@ -1,35 +1,32 @@
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { MedicalNotesScreen } from '../screens/MedicalNotesScreen';
-import { MedicalNoteDetailsScreen } from '../screens/MedicalNoteDetailsScreen';
-import { CreateMedicalNoteScreen } from '../screens/CreateMedicalNoteScreen';
-import { EditMedicalNoteScreen } from '../screens/EditMedicalNoteScreen';
-import { MedicalRecordsScreen } from '../screens/MedicalRecordsScreen';
+import { MedicalNotesScreen } from '../features/medical-notes/screens/MedicalNotesScreen';
+import { CreateMedicalNoteScreen } from '../features/medical-notes/screens/CreateMedicalNoteScreen';
+import { MedicalNoteDetailsScreen } from '../features/medical-notes/screens/MedicalNoteDetailsScreen';
+import { EditMedicalNoteScreen } from '../features/medical-notes/screens/EditMedicalNoteScreen';
 
-const MedicalNotesStack = createStackNavigator();
+export type MedicalNotesStackParamList = {
+  MedicalNotes: { noteId: string };
+  MedicalNoteDetails: { id: string };
+  CreateMedicalNote: { appointmentId: string; patientId: string | undefined };
+  EditMedicalNote: { id: string };
+};
 
-export const MedicalNotesNavigator: React.FC = () => {
+const Stack = createStackNavigator<MedicalNotesStackParamList>();
+
+export const MedicalNotesNavigator = () => {
   return (
-    <MedicalNotesStack.Navigator screenOptions={{ headerShown: false }}>
-      <MedicalNotesStack.Screen
-        name="MedicalNotesList"
-        component={MedicalNotesScreen}
-      />
-      <MedicalNotesStack.Screen
+    <Stack.Navigator>
+      <Stack.Screen name="MedicalNotes" component={MedicalNotesScreen} />
+      <Stack.Screen
         name="MedicalNoteDetails"
         component={MedicalNoteDetailsScreen}
       />
-      <MedicalNotesStack.Screen
+      <Stack.Screen
         name="CreateMedicalNote"
         component={CreateMedicalNoteScreen}
       />
-      <MedicalNotesStack.Screen
-        name="EditMedicalNote"
-        component={EditMedicalNoteScreen}
-      />
-      <MedicalNotesStack.Screen
-        name="MedicalRecords"
-        component={MedicalRecordsScreen}
-      />
-    </MedicalNotesStack.Navigator>
+      <Stack.Screen name="EditMedicalNote" component={EditMedicalNoteScreen} />
+    </Stack.Navigator>
   );
 };

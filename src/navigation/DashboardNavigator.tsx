@@ -1,9 +1,15 @@
-import { DashboardScreen } from '../features/dashboard';
+import { createStackNavigator } from '@react-navigation/stack';
+import { DashboardScreen } from '../features/dashboard/screens/DashboardScreen';
 import { NotificationsScreen } from '../screens/NotificationsScreen';
 import { ActivityScreen } from '../screens/ActivityScreen';
-import { createStackNavigator } from '@react-navigation/stack';
 
-const DashboardStack = createStackNavigator();
+export type DashboardStackParamList = {
+  DashboardMain: undefined;
+  Notifications: undefined;
+  Activity: undefined;
+};
+
+const DashboardStack = createStackNavigator<DashboardStackParamList>();
 
 export const DashboardNavigator: React.FC = () => {
   return (

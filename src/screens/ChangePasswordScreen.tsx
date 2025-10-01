@@ -1,6 +1,11 @@
 import { styles } from './styles';
 
-export const ChangePasswordScreen: React.FC<{ navigation: any }> = ({
+import { StackScreenProps } from '@react-navigation/stack';
+import { ProfileStackParamList } from '../navigation/ProfileNavigator';
+
+interface Props extends StackScreenProps<ProfileStackParamList, 'ChangePassword'> {}
+
+export const ChangePasswordScreen: React.FC<Props> = ({
   navigation,
 }) => {
   const [changePassword, { isLoading }] = useChangePasswordMutation();

@@ -9,14 +9,10 @@ import { AppointmentStatsHeader } from '../components/AppointmentStatsHeader';
 import { AppointmentFilters } from '../components/AppointmentFilters';
 import { AppointmentsList } from '../components/AppointmentsList';
 
-interface Props {
-  navigation: any;
-  route?: {
-    params?: {
-      filter?: string;
-    };
-  };
-}
+import { StackScreenProps } from '@react-navigation/stack';
+import { AppointmentsStackParamList } from '../../../src/navigation/AppointmentsNavigator';
+
+interface Props extends StackScreenProps<AppointmentsStackParamList, 'AppointmentsList'> {}
 
 export const AppointmentsScreen: React.FC<Props> = ({ navigation, route }) => {
   const { user } = useSelector((state: RootState) => state.auth);

@@ -1,37 +1,95 @@
-import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { RootState } from '../app/store';
 
-import { DashboardNavigator } from './DashboardNavigator';
-import { AppointmentsNavigator } from './AppointmentsNavigator';
-import { PatientsNavigator } from './PatientsNavigator';
-import { DoctorsNavigator } from './DoctorsNavigator';
-import { MedicalNotesNavigator } from './MedicalNotesNavigator';
-import { ProfileNavigator } from './ProfileNavigator';
+import {
+  DashboardNavigator,
+  DashboardStackParamList,
+} from './DashboardNavigator';
+import {
+  AppointmentsNavigator,
+  AppointmentsStackParamList,
+} from './AppointmentsNavigator';
+import { PatientsNavigator, PatientsStackParamList } from './PatientsNavigator';
+import { DoctorsNavigator, DoctorsStackParamList } from './DoctorsNavigator';
+import {
+  MedicalNotesNavigator,
+  MedicalNotesStackParamList,
+} from './MedicalNotesNavigator';
+import { ProfileNavigator, ProfileStackParamList } from './ProfileNavigator';
+import { SearchScreen } from '../screens/SearchScreen';
+import { ActivityScreen } from '../screens/ActivityScreen';
 import { DrawerContent } from '../components/DrawerContent';
 
-const Tab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
-// const Stack = createStackNavigator();
+// Define the ParamList for the Tab Navigator
+export type MainTabParamList = {
+  Dashboard: NavigatorScreenParams<DashboardStackParamList>;
+  Appointments: NavigatorScreenParams<AppointmentsStackParamList>;
+  Patients: NavigatorScreenParams<PatientsStackParamList>;
+  Doctors: NavigatorScreenParams<DoctorsStackParamList>;
+  MedicalNotes: NavigatorScreenParams<MedicalNotesStackParamList>;
+  Profile: NavigatorScreenParams<ProfileStackParamList>;
+  Search: undefined;
+};
+
+// Define the ParamList for the Drawer Navigator
+export type MainDrawerParamList = {
+  MainTabs: NavigatorScreenParams<MainTabParamList>;
+  Activity: undefined;
+};
+
+// Define the RootStackParamList to include all navigators
+export type RootStackParamList = {
+  Auth: undefined;
+  Main: NavigatorScreenParams<MainDrawerParamList>;
+};
+
+const Tab = createBottomTabNavigator<MainTabParamList>();
+const Drawer = createDrawerNavigator<MainDrawerParamList>();
 
 // Bottom Tab Navigator for main sections
 const TabNavigator: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const getTabsForRole = () => {
+  const getTabsForRole = (): Array<{
+    name: keyof MainTabParamList;
+    component: React.ComponentType<any>;
+    icon: string;
+    label: string;
+  }> => {
+    const commonTabs: Array<{
+      name: keyof MainTabParamList;
+      component: React.ComponentType<any>;
+      icon: string;
+      label: string;
+    }> = [
+      {
+        name: 'Dashboard',
+        component: DashboardNavigator,
+        icon: 'view-dashboard',
+        label: 'Dashboard',
+      },
+      {
+        name: 'Search',
+        component: SearchScreen,
+        icon: 'magnify',
+        label: 'Search',
+      },
+      {
+        name: 'Profile',
+        component: ProfileNavigator,
+        icon: 'account',
+        label: 'Profile',
+      },
+    ];
+
     switch (user?.role) {
       case 'doctor':
         return [
-          {
-            name: 'Dashboard',
-            component: DashboardNavigator,
-            icon: 'view-dashboard',
-            label: 'Dashboard',
-          },
+          ...commonTabs,
           {
             name: 'Appointments',
             component: AppointmentsNavigator,
@@ -50,22 +108,11 @@ const TabNavigator: React.FC = () => {
             icon: 'note-text',
             label: 'Notes',
           },
-          {
-            name: 'Profile',
-            component: ProfileNavigator,
-            icon: 'account',
-            label: 'Profile',
-          },
         ];
 
       case 'patient':
         return [
-          {
-            name: 'Dashboard',
-            component: DashboardNavigator,
-            icon: 'view-dashboard',
-            label: 'Dashboard',
-          },
+          ...commonTabs,
           {
             name: 'Appointments',
             component: AppointmentsNavigator,
@@ -79,27 +126,16 @@ const TabNavigator: React.FC = () => {
             label: 'Doctors',
           },
           {
-            name: 'MedicalRecords',
+            name: 'MedicalNotes',
             component: MedicalNotesNavigator,
             icon: 'file-document',
             label: 'Records',
-          },
-          {
-            name: 'Profile',
-            component: ProfileNavigator,
-            icon: 'account',
-            label: 'Profile',
           },
         ];
 
       case 'admin':
         return [
-          {
-            name: 'Dashboard',
-            component: DashboardNavigator,
-            icon: 'view-dashboard',
-            label: 'Dashboard',
-          },
+          ...commonTabs,
           {
             name: 'Appointments',
             component: AppointmentsNavigator,
@@ -118,29 +154,10 @@ const TabNavigator: React.FC = () => {
             icon: 'doctor',
             label: 'Doctors',
           },
-          {
-            name: 'Profile',
-            component: ProfileNavigator,
-            icon: 'account',
-            label: 'Profile',
-          },
         ];
 
       default:
-        return [
-          {
-            name: 'Dashboard',
-            component: DashboardNavigator,
-            icon: 'view-dashboard',
-            label: 'Dashboard',
-          },
-          {
-            name: 'Profile',
-            component: ProfileNavigator,
-            icon: 'account',
-            label: 'Profile',
-          },
-        ];
+        return commonTabs;
     }
   };
 
@@ -207,6 +224,16 @@ export const MainNavigator: React.FC = () => {
           drawerLabel: 'Home',
           drawerIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Activity"
+        component={ActivityScreen}
+        options={{
+          drawerLabel: 'Activity',
+          drawerIcon: ({ color, size }) => (
+            <Icon name="history" size={size} color={color} />
           ),
         }}
       />

@@ -23,14 +23,10 @@ import { DoctorReviews } from '../components/DoctorReviews';
 import { BookAppointmentModal } from '../components/BookAppointmentModal';
 import { styles } from '../styles/doctorStyles';
 
-interface Props {
-  navigation: any;
-  route: {
-    params: {
-      doctorId: string;
-    };
-  };
-}
+import { StackScreenProps } from '@react-navigation/stack';
+import { DoctorsStackParamList } from '../../../src/navigation/DoctorsNavigator';
+
+interface Props extends StackScreenProps<DoctorsStackParamList, 'DoctorDetails'> {}
 
 export const DoctorDetailsScreen: React.FC<Props> = ({ navigation, route }) => {
   const { doctorId } = route.params;

@@ -14,14 +14,10 @@ import { WeeklyScheduleEditor } from '../components/WeeklyScheduleEditor';
 import { DatePickerModal } from '../components/DatePickerModal';
 import { styles } from '../styles/doctorStyles';
 
-interface Props {
-  navigation: any;
-  route: {
-    params: {
-      doctorId: string;
-    };
-  };
-}
+import { StackScreenProps } from '@react-navigation/stack';
+import { DoctorsStackParamList } from '../../../src/navigation/DoctorsNavigator';
+
+interface Props extends StackScreenProps<DoctorsStackParamList, 'DoctorAvailability'> {}
 
 export const DoctorAvailabilityScreen: React.FC<Props> = ({
   navigation,

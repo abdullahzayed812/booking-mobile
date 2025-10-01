@@ -26,14 +26,16 @@ import { AppointmentNotes } from '../components/AppointmentNotes';
 import { RescheduleModal } from '../components/RescheduleModal';
 import { styles } from '../styles/appointmentStyles';
 
-interface Props {
-  navigation: any;
-  route: {
-    params: {
-      appointmentId: string;
-    };
-  };
-}
+import { StackScreenProps } from '@react-navigation/stack';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { AppointmentsStackParamList } from '../../../navigation/AppointmentsNavigator';
+import { MedicalNotesStackParamList } from '../../../navigation/MedicalNotesNavigator';
+
+interface Props
+  extends CompositeScreenProps<
+    StackScreenProps<AppointmentsStackParamList, 'AppointmentDetails'>,
+    StackScreenProps<MedicalNotesStackParamList>
+  > {}
 
 export const AppointmentDetailsScreen: React.FC<Props> = ({
   navigation,
@@ -73,6 +75,7 @@ export const AppointmentDetailsScreen: React.FC<Props> = ({
               await cancelAppointment(appointmentId).unwrap();
               Alert.alert('Success', 'Appointment cancelled successfully');
               navigation.goBack();
+              // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
             } catch (error) {
               Alert.alert('Error', 'Failed to cancel appointment');
             }
@@ -86,6 +89,7 @@ export const AppointmentDetailsScreen: React.FC<Props> = ({
     try {
       await confirmAppointment(appointmentId).unwrap();
       Alert.alert('Success', 'Appointment confirmed successfully');
+      // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
     } catch (error) {
       Alert.alert('Error', 'Failed to confirm appointment');
     }
@@ -95,6 +99,7 @@ export const AppointmentDetailsScreen: React.FC<Props> = ({
     try {
       await startAppointment(appointmentId).unwrap();
       Alert.alert('Success', 'Appointment started');
+      // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
     } catch (error) {
       Alert.alert('Error', 'Failed to start appointment');
     }
@@ -244,7 +249,7 @@ export const AppointmentDetailsScreen: React.FC<Props> = ({
               })
             }
             onNotePress={(noteId: any) =>
-              navigation.navigate('MedicalNoteDetails', { noteId })
+              navigation.navigate('MedicalNoteDetails', { id: noteId })
             }
           />
         )}

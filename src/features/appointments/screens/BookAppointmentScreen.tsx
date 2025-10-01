@@ -1,7 +1,17 @@
-export const BookAppointmentScreen: React.FC<{
-  navigation: any;
-  route: any;
-}> = ({ navigation, route }) => {
+import { StackScreenProps } from '@react-navigation/stack';
+import { AppointmentsStackParamList } from '../../../navigation/AppointmentsNavigator';
+import { CreateAppointmentForm } from '../../../components/forms/CreateAppointmentForm';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { Icon } from 'react-native-vector-icons/Icon';
+import { styles } from '../styles/appointmentStyles';
+
+interface Props
+  extends StackScreenProps<AppointmentsStackParamList, 'BookAppointment'> {}
+
+export const BookAppointmentScreen: React.FC<Props> = ({
+  navigation,
+  route,
+}) => {
   const { doctorId, patientId } = route.params || {};
 
   return (

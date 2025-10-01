@@ -1,4 +1,9 @@
-export const NotificationsScreen: React.FC<{ navigation: any }> = ({
+import { StackScreenProps } from '@react-navigation/stack';
+import { DashboardStackParamList } from '../navigation/DashboardNavigator';
+
+interface Props extends StackScreenProps<DashboardStackParamList, 'Notifications'> {}
+
+export const NotificationsScreen: React.FC<Props> = ({
   navigation,
 }) => {
   const [notifications, setNotifications] = useState([

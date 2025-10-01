@@ -1,13 +1,17 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import {
-  AppointmentsScreen,
-  AppointmentDetailsScreen,
-} from '../features/appointments';
-import { BookAppointmentScreen } from '../screens/BookAppointmentScreen';
-import { CreateAppointmentScreen } from '../screens/CreateAppointmentScreen';
-import { RescheduleAppointmentScreen } from '../screens/RescheduleAppointmentScreen';
+import { AppointmentsScreen } from '../features/appointments/screens/AppointmentsScreen';
+import { AppointmentDetailsScreen } from '../features/appointments/screens/AppointmentDetailsScreen';
+import { BookAppointmentScreen } from '../features/appointments/screens/BookAppointmentScreen';
+import { RescheduleAppointmentScreen } from '../features/appointments/screens/RescheduleAppointmentScreen';
 
-const AppointmentsStack = createStackNavigator();
+export type AppointmentsStackParamList = {
+  AppointmentsList: undefined;
+  AppointmentDetails: { appointmentId: string; doctorId?: string };
+  BookAppointment: { doctorId?: string; patientId?: string };
+  RescheduleAppointment: { appointmentId: string };
+};
+
+const AppointmentsStack = createStackNavigator<AppointmentsStackParamList>();
 
 export const AppointmentsNavigator: React.FC = () => {
   return (
@@ -23,10 +27,6 @@ export const AppointmentsNavigator: React.FC = () => {
       <AppointmentsStack.Screen
         name="BookAppointment"
         component={BookAppointmentScreen}
-      />
-      <AppointmentsStack.Screen
-        name="CreateAppointment"
-        component={CreateAppointmentScreen}
       />
       <AppointmentsStack.Screen
         name="RescheduleAppointment"

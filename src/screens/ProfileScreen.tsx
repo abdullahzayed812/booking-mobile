@@ -1,7 +1,21 @@
-export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+
+import React from 'react';
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { RootState } from '../app/store';
+import { useLogoutMutation, useMeQuery, useGetSessionsQuery } from '../features/auth/api/authApi';
+
+import { StackScreenProps } from '@react-navigation/stack';
+import { ProfileStackParamList } from '../navigation/ProfileNavigator';
+
+interface Props extends StackScreenProps<ProfileStackParamList, 'ProfileMain'> {}
+
+export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  
+
   const { data: userProfile, isLoading } = useMeQuery();
   const { data: sessions } = useGetSessionsQuery();
   const [logout, { isLoading: loggingOut }] = useLogoutMutation();
@@ -51,147 +65,46 @@ export const ProfileScreen: React.FC<{ navigation: any }> = ({ navigation }) => 
       onPress: () => navigation.navigate('SessionManagement'),
     },
     {
-      icon: 'bell',
-      title: 'Notifications',
-      subtitle: 'Manage notification preferences',
-      onPress: () => navigation.navigate('NotificationSettings'),
-    },
-    {
-      icon: 'shield-check',
-      title: 'Privacy & Security',
-      subtitle: 'Privacy settings and security options',
-      onPress: () => navigation.navigate('PrivacySettings'),
+      icon: 'cog',
+      title: 'Settings',
+      subtitle: 'App settings',
+      onPress: () => navigation.navigate('Settings'),
     },
     {
       icon: 'help-circle',
       title: 'Help & Support',
       subtitle: 'Get help or contact support',
-      onPress          onPress={() => setShowCreateModal(true)}
-          >
-            <Icon name="plus" size={24} color="white" />
+      onPress: () => navigation.navigate('HelpSupport'),
+    },
+    {
+      icon: 'information',
+      title: 'About',
+      subtitle: 'About the app',
+      onPress: () => navigation.navigate('About'),
+    },
+  ];
+
+  return (
+    <View>
+      <Text>Profile</Text>
+      <FlatList
+        data={profileItems}
+        keyExtractor={(item) => item.title}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={item.onPress}>
+            <View>
+              <Icon name={item.icon} size={24} />
+              <View>
+                <Text>{item.title}</Text>
+                <Text>{item.subtitle}</Text>
+              </View>
+            </View>
           </TouchableOpacity>
         )}
-      </View>
-
-      {/* Stats Header */}
-      {stats && (
-        <DoctorStatsHeader
-          stats={stats}
-          onStatPress={(filter) => {
-            // Handle stat filter if needed
-          }}
-        />
-      )}
-
-      {/* Search and Filters */}
-      <View style={styles.filtersContainer}>
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <Icon name="magnify" size={20} color="#6b7280" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search doctors by name or specialization..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            returnKeyType="search"
-            placeholderTextColor="#9ca3af"
-          />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity
-              style={styles.clearSearch}
-              onPress={() => setSearchQuery('')}
-            >
-              <Icon name="close" size={20} color="#6b7280" />
-            </TouchableOpacity>
-          )}
-        </View>
-
-        {/* Filters */}
-        <View style={styles.filterRow}>
-          <TouchableOpacity
-            style={[
-              styles.filterButton,
-              acceptingOnly && styles.filterButtonActive
-            ]}
-            onPress={() => setAcceptingOnly(!acceptingOnly)}
-          >
-            <Icon 
-              name={acceptingOnly ? "check-circle" : "check-circle-outline"} 
-              size={16} 
-              color={acceptingOnly ? "white" : "#6b7280"} 
-            />
-            <Text style={[
-              styles.filterButtonText,
-              acceptingOnly && styles.filterButtonTextActive
-            ]}>
-              Accepting Patients
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Specialization Filter */}
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.specializationFilters}
-        >
-          <TouchableOpacity
-            style={[
-              styles.specializationChip,
-              selectedSpecialization === '' && styles.specializationChipActive
-            ]}
-            onPress={() => setSelectedSpecialization('')}
-          >
-            <Text style={[
-              styles.specializationChipText,
-              selectedSpecialization === '' && styles.specializationChipTextActive
-            ]}>
-              All Specializations
-            </Text>
-          </TouchableOpacity>
-          
-          {specializations.map((specialization) => (
-            <TouchableOpacity
-              key={specialization}
-              style={[
-                styles.specializationChip,
-                selectedSpecialization === specialization && styles.specializationChipActive
-              ]}
-              onPress={() => setSelectedSpecialization(specialization)}
-            >
-              <Text style={[
-                styles.specializationChipText,
-                selectedSpecialization === specialization && styles.specializationChipTextActive
-              ]}>
-                {specialization}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-
-      {/* Doctors List */}
-      <DoctorsList
-        searchQuery={searchQuery}
-        specialization={selectedSpecialization}
-        acceptingOnly={acceptingOnly}
-        onDoctorPress={handleDoctorPress}
-        onBookAppointment={(doctorId) => 
-          navigation.navigate('BookAppointment', { doctorId })
-        }
       />
-
-      {/* Create Doctor Modal */}
-      {canCreateDoctor && (
-        <CreateDoctorModal
-          visible={showCreateModal}
-          onClose={() => setShowCreateModal(false)}
-          onSuccess={() => {
-            setShowCreateModal(false);
-            // List will refresh automatically
-          }}
-        />
-      )}
+      <TouchableOpacity onPress={handleLogout}>
+        <Text>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };

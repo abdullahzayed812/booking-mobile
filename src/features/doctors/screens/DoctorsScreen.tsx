@@ -20,9 +20,10 @@ import { CreateDoctorModal } from '../components/CreateDoctorModal';
 import { styles } from '../styles/doctorStyles';
 import { RootState } from '../../../app/store';
 
-interface Props {
-  navigation: any;
-}
+import { StackScreenProps } from '@react-navigation/stack';
+import { DoctorsStackParamList } from '../../../src/navigation/DoctorsNavigator';
+
+interface Props extends StackScreenProps<DoctorsStackParamList, 'DoctorsList'> {}
 
 export const DoctorsScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useSelector((state: RootState) => state.auth);

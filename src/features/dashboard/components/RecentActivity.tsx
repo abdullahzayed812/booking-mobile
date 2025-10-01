@@ -6,9 +6,10 @@ import { styles } from '../styles/dashboardStyles';
 interface Props {
   userRole?: string;
   onViewAll: () => void;
+  navigation: any;
 }
 
-export const RecentActivity: React.FC<Props> = ({ onViewAll }) => {
+export const RecentActivity: React.FC<Props> = ({ onViewAll, navigation }) => {
   // Mock recent activity data
   const activities = [
     {
@@ -44,7 +45,7 @@ export const RecentActivity: React.FC<Props> = ({ onViewAll }) => {
     <View style={styles.activitySection}>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Recent Activity</Text>
-        <TouchableOpacity onPress={onViewAll}>
+        <TouchableOpacity onPress={() => navigation.navigate('Activity')}>
           <Text style={styles.viewAllText}>View All</Text>
         </TouchableOpacity>
       </View>

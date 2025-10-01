@@ -1,12 +1,21 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { DoctorsScreen } from '../screens/DoctorsScreen';
-import { DoctorDetailsScreen } from '../screens/DoctorDetailsScreen';
-import { DoctorAvailabilityScreen } from '../screens/DoctorAvailabilityScreen';
-import { DoctorScheduleScreen } from '../screens/DoctorScheduleScreen';
-import { CreateDoctorScreen } from '../screens/CreateDoctorScreen';
-import { EditDoctorScreen } from '../screens/EditDoctorScreen';
+import { DoctorsScreen } from '../features/doctors/screens/DoctorsScreen';
+import { DoctorDetailsScreen } from '../features/doctors/screens/DoctorDetailsScreen';
+import { DoctorAvailabilityScreen } from '../features/doctors/screens/DoctorAvailabilityScreen';
+import { DoctorScheduleScreen } from '../features/doctors/screens/DoctorScheduleScreen';
+import { CreateDoctorScreen } from '../features/doctors/screens/CreateDoctorScreen';
+import { EditDoctorScreen } from '../features/doctors/screens/EditDoctorScreen';
 
-const DoctorsStack = createStackNavigator();
+export type DoctorsStackParamList = {
+  DoctorsList: undefined;
+  DoctorDetails: { doctorId: string };
+  DoctorAvailability: { doctorId: string };
+  DoctorSchedule: { doctorId: string };
+  CreateDoctor: undefined;
+  EditDoctor: { doctorId: string };
+};
+
+const DoctorsStack = createStackNavigator<DoctorsStackParamList>();
 
 export const DoctorsNavigator: React.FC = () => {
   return (

@@ -1,4 +1,9 @@
-export const AboutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+import { StackScreenProps } from '@react-navigation/stack';
+import { ProfileStackParamList } from '../navigation/ProfileNavigator';
+
+interface Props extends StackScreenProps<ProfileStackParamList, 'About'> {}
+
+export const AboutScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>

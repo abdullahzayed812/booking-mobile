@@ -15,9 +15,10 @@ import { UpcomingAppointments } from '../components/UpcomingAppointments';
 import { RecentActivity } from '../components/RecentActivity';
 import { styles } from '../styles/dashboardStyles';
 
-interface Props {
-  navigation: any;
-}
+import { StackScreenProps } from '@react-navigation/stack';
+import { DashboardStackParamList } from '../../../src/navigation/DashboardNavigator';
+
+interface Props extends StackScreenProps<DashboardStackParamList, 'DashboardMain'> {}
 
 export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useSelector((state: RootState) => state.auth);

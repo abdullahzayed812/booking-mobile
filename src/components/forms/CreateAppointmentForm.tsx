@@ -19,7 +19,7 @@ import {
   useGetAvailableSlotsQuery,
 } from '../../features/appointments/api/appointmentApi';
 import { useListDoctorsQuery } from '../../features/doctors/api/doctorApi';
-import { useListPatientsQuery } from '../../features/patients/api/patientApi';
+// import { useListPatientsQuery } from '../../features/patients/api/patientApi';
 import { styles } from '../../screens/styles';
 
 const appointmentSchema = z.object({
@@ -56,7 +56,7 @@ export const CreateAppointmentForm: React.FC<Props> = ({
     limit: 50,
   });
 
-  const { data: patientsData } = useListPatientsQuery({ limit: 100 });
+  // const { data: patientsData } = useListPatientsQuery({ limit: 100 });
 
   const {
     control,
@@ -77,7 +77,7 @@ export const CreateAppointmentForm: React.FC<Props> = ({
   });
 
   const selectedDoctorId = watch('doctorId');
-  const selectedDateTime = watch('scheduledAt');
+  // const selectedDateTime = watch('scheduledAt');
 
   const { data: availableSlots = [] } = useGetAvailableSlotsQuery(
     {
@@ -129,7 +129,7 @@ export const CreateAppointmentForm: React.FC<Props> = ({
               name="doctorId"
               render={({ field: { onChange, value } }) => (
                 <View style={styles.doctorsList}>
-                  {doctors.map(doctor => (
+                  {doctors?.map(doctor => (
                     <TouchableOpacity
                       key={doctor.id}
                       style={[
@@ -176,7 +176,7 @@ export const CreateAppointmentForm: React.FC<Props> = ({
             <Controller
               control={control}
               name="patientId"
-              render={({ field: { onChange, value } }) => (
+              render={() => (
                 <View style={styles.patientSearch}>
                   <TextInput
                     style={styles.searchInput}

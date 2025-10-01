@@ -20,14 +20,20 @@ import { PatientDocuments } from '../components/PatientDocuments';
 import { EditPatientModal } from '../components/EditPatientModal';
 import { styles } from '../styles/patientStyles';
 
-interface Props {
-  navigation: any;
-  route: {
-    params: {
-      patientId: string;
-    };
-  };
-}
+import { StackScreenProps } from '@react-navigation/stack';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { PatientsStackParamList } from '../../../navigation/PatientsNavigator';
+import { AppointmentsStackParamList } from '../../../navigation/AppointmentsNavigator';
+import { MedicalNotesStackParamList } from '../../../navigation/MedicalNotesNavigator';
+
+interface Props
+  extends CompositeScreenProps<
+    StackScreenProps<PatientsStackParamList, 'PatientDetails'>,
+    CompositeScreenProps<
+      StackScreenProps<AppointmentsStackParamList>,
+      StackScreenProps<MedicalNotesStackParamList>
+    >
+  > {}
 
 export const PatientDetailsScreen: React.FC<Props> = ({
   navigation,
@@ -213,7 +219,7 @@ export const PatientDetailsScreen: React.FC<Props> = ({
               navigation.navigate('EditPatientMedicalHistory', { patientId })
             }
             onNotePress={(note: { id: any }) =>
-              navigation.navigate('MedicalNoteDetails', { noteId: note.id })
+              navigation.navigate('MedicalNoteDetails', { id: note.id })
             }
           />
         )}
